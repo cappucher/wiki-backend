@@ -1,0 +1,21 @@
+POST http://localhost:3030/new
+Content-Type: application/json
+
+{
+    "title": "AP CS with DS",
+    "body": "AP CS with DS is an easy class",
+    "keyFacts": {
+        "teacher": "Mrs. Mittal",
+        "difficulty": 4
+    }
+}
+
+###
+
+POST http://localhost:3030/edit
+Content-Type: application/json
+
+{
+    "title": "AP CS with DS",
+    "body": "AP CS with DS is a very easy class"
+}
