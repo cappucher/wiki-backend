@@ -5,7 +5,6 @@ import { Op } from "sequelize";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
-import { hash } from "crypto";
 
 
 const app = express();

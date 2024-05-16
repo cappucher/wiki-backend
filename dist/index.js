@@ -10,6 +10,16 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const app = (0, express_1.default)();
+const API_KEY = process.env.API_KEY;
+app.use((req, res, next) => {
+    const apiKey = req.get('x-api-key');
+    if (apiKey && apiKey === API_KEY) {
+        next();
+    }
+    else {
+        res.status(401).json({ error: 'Unauthorized' });
+    }
+});
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use((0, cors_1.default)());
@@ -27,10 +37,6 @@ app.get("/allPages", async (_, res) => {
         attributes: ["title"]
     });
     res.send(allPages);
-});
-app.get("/configure", async (_, res) => {
-    await (0, models_1.syncPage)(true);
-    res.send("Configured");
 });
 app.get("/wiki/:title", async (req, res) => {
     let title = req.params.title;
