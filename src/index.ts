@@ -5,9 +5,21 @@ import { Op } from "sequelize";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
+import { hash } from "crypto";
 
 
 const app = express();
+const API_KEY = process.env.API_KEY;
+
+app.use((req, res, next) => {
+    const apiKey = req.get('x-api-key');
+    if (apiKey && apiKey === API_KEY) {
+        next();
+    } else {
+        res.status(401).json({ error: 'Unauthorized' });
+    }
+});
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
@@ -23,16 +35,12 @@ app.get("/", async (_, res: Response) => {
     res.send(allPages);
 });
 
+
 app.get("/allPages", async (_, res: Response) => {
     const allPages: Page[] = await Page.findAll({
         attributes: ["title"]
     });
     res.send(allPages);
-})
-
-app.get("/configure", async (_, res: Response) => {
-    await syncPage(true);
-    res.send("Configured");
 })
 
 app.get("/wiki/:title", async (req: Request, res: Response) => {
