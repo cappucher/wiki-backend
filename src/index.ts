@@ -10,14 +10,14 @@ import morgan from "morgan";
 const app = express();
 const API_KEY = process.env.API_KEY;
 
-app.use((req, res, next) => {
-    const apiKey = req.get('x-api-key');
-    if (apiKey && apiKey === API_KEY) {
-        next();
-    } else {
-        res.status(401).json({ error: 'Unauthorized' });
-    }
-});
+// app.use((req, res, next) => {
+//     const apiKey = req.get('x-api-key');
+//     if (apiKey && apiKey === API_KEY) {
+//         next();
+//     } else {
+//         res.status(401).json({ error: 'Unauthorized' });
+//     }
+// });
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
