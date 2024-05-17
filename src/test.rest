@@ -1,5 +1,6 @@
 POST http://localhost:3030/new
 Content-Type: application/json
+X-Admin-Token: q64Mui4dWwZblJT6 
 
 {
     "title": "AP CS with DS",

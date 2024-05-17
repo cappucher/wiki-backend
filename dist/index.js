@@ -9,12 +9,13 @@ const sequelize_1 = require("sequelize");
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
+const auth_1 = require("./auth");
 const app = (0, express_1.default)();
-const API_KEY = process.env.API_KEY;
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use((0, cors_1.default)());
-app.use((0, morgan_1.default)("tiny"));
+app.use((0, morgan_1.default)('combined'));
+app.use(auth_1.verifyAdminToken);
 app.get("/", async (_, res) => {
     const allPages = await models_1.Page.findAll({
         order: [["visits", "DESC"]],
@@ -40,7 +41,7 @@ app.get("/wiki/:title", async (req, res) => {
         }
     });
     if (page === null) {
-        res.status(404).send("Page does not exist.");
+        res.status(404).send({ message: "Page does not exist." });
         return;
     }
     if (page.dataValues.title !== title) {
@@ -84,6 +85,7 @@ app.post("/new", async (req, res) => {
         res.status(400).send("Bad Parameters");
         return;
     }
+    console.log("POST /new");
     const title = req.body.title.replace(/ /g, "_");
     const body = req.body.body;
     const keyFacts = JSON.stringify(req.body.keyFacts);
@@ -100,10 +102,10 @@ app.post("/new", async (req, res) => {
             body: body,
             keyFacts: keyFacts
         });
-        res.status(201).send("Page created sucessfully.");
+        res.status(201).send({ message: "Page created sucessfully." });
         return;
     }
-    res.status(409).send("Page already exists.");
+    res.status(409).send({ message: "Page already exists." });
 });
 app.post("/search", async (req, res) => {
     let title = req.body.title;

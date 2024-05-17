@@ -1,31 +1,24 @@
 import express, { Request, Response } from "express";
 // import { checkConnection } from "./db/config";
-import { Page, syncPage } from "./db/models";
+import { Page } from "./db/models";
 import { Op } from "sequelize";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
+import { verifyAdminToken } from "./auth";
 
 
 const app = express();
-const API_KEY = process.env.API_KEY;
-
-// app.use((req, res, next) => {
-//     const apiKey = req.get('x-api-key');
-//     if (apiKey && apiKey === API_KEY) {
-//         next();
-//     } else {
-//         res.status(401).json({ error: 'Unauthorized' });
-//     }
-// });
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
-app.use(morgan("tiny"));
+app.use(morgan('combined'));
+app.use(verifyAdminToken);
+
+
 
 app.get("/", async (_, res: Response) => {
-    // await checkConnection();
     const allPages: Page[] = await Page.findAll({
         order: [["visits", "DESC"]],
         attributes: ["title"],
@@ -54,7 +47,7 @@ app.get("/wiki/:title", async (req: Request, res: Response) => {
         }
     })
     if (page === null) {
-        res.status(404).send("Page does not exist.");
+        res.status(404).send({ message: "Page does not exist." });
         return;
     }
     if (page.dataValues.title !== title) {
@@ -104,6 +97,7 @@ app.post("/new", async (req: Request, res: Response) => {
         res.status(400).send("Bad Parameters");
         return;
     }
+    console.log("POST /new")
     const title: string = req.body.title.replace(/ /g, "_");
     const body: string = req.body.body;
     const keyFacts: string = JSON.stringify(req.body.keyFacts);
@@ -121,10 +115,10 @@ app.post("/new", async (req: Request, res: Response) => {
             body: body,
             keyFacts: keyFacts
         });
-        res.status(201).send("Page created sucessfully.");
+        res.status(201).send({ message: "Page created sucessfully." });
         return;
     }
-    res.status(409).send("Page already exists.");
+    res.status(409).send({ message: "Page already exists." });
 })
 
 app.post("/search", async (req: Request, res: Response) => {

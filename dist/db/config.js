@@ -12,7 +12,8 @@ exports.ENV_VARS = {
     PGDATABASE: process.env.PGDATABASE,
     PGUSER: process.env.PGUSER,
     PGPASSWORD: process.env.PGPASSWORD,
-    ENDPOINT_ID: process.env.ENDPOINT_ID
+    ENDPOINT_ID: process.env.ENDPOINT_ID,
+    SECRET: process.env.SECRET
 };
 const sequelize = new sequelize_1.Sequelize({
     dialect: 'postgres',

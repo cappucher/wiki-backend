@@ -5,11 +5,12 @@ dotenv.config({ path: ".env.local" })
 
 
 export const ENV_VARS = {
-    PGHOST: process.env.PGHOST,
-    PGDATABASE: process.env.PGDATABASE,
-    PGUSER: process.env.PGUSER,
-    PGPASSWORD: process.env.PGPASSWORD,
-    ENDPOINT_ID: process.env.ENDPOINT_ID
+    PGHOST: process.env.PGHOST!,
+    PGDATABASE: process.env.PGDATABASE!,
+    PGUSER: process.env.PGUSER!,
+    PGPASSWORD: process.env.PGPASSWORD!,
+    ENDPOINT_ID: process.env.ENDPOINT_ID!,
+    SECRET: process.env.SECRET!
 }
 
 // Create a Sequelize instance
