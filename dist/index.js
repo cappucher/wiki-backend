@@ -74,11 +74,11 @@ app.post("/edit", async (req, res) => {
     });
     res.status(200).send("Page updated sucessfully.");
 });
-app.get("/random", async (_, res) => {
+app.post("/random", async (req, res) => {
     const allPages = await models_1.Page.findAll({
         attributes: ["title"]
     });
-    res.send(allPages[Math.floor(Math.random() * allPages.length)]);
+    res.send(allPages[Math.floor(req.body.randomSeed * allPages.length)]);
 });
 app.post("/new", async (req, res) => {
     if (!req.body) {

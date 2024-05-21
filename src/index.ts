@@ -17,7 +17,6 @@ app.use(morgan('combined'));
 app.use(verifyAdminToken);
 
 
-
 app.get("/", async (_, res: Response) => {
     const allPages: Page[] = await Page.findAll({
         order: [["visits", "DESC"]],
@@ -85,11 +84,11 @@ app.post("/edit", async (req: Request, res: Response) => {
     res.status(200).send("Page updated sucessfully.");
 })
 
-app.get("/random", async (_, res: Response) => {
+app.post("/random", async (req: Request, res: Response) => {
     const allPages: Page[] = await Page.findAll({
         attributes: ["title"]
     });
-    res.send(allPages[Math.floor(Math.random() * allPages.length)]);
+    res.send(allPages[Math.floor(req.body.randomSeed * allPages.length)]);
 })
 
 app.post("/new", async (req: Request, res: Response) => {
