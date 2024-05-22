@@ -1,22 +1,14 @@
-POST http://localhost:3030/new
+GET http://localhost:3030/allPages
 Content-Type: application/json
 X-Admin-Token: q64Mui4dWwZblJT6 
-
-{
-    "title": "AP CS with DS",
-    "body": "AP CS with DS is an easy class",
-    "keyFacts": {
-        "teacher": "Mrs. Mittal",
-        "difficulty": 4
-    }
-}
 
 ###
 
 POST http://localhost:3030/edit
 Content-Type: application/json
+X-Admin-Token: q64Mui4dWwZblJT6 
 
 {
-    "title": "AP CS with DS",
-    "body": "AP CS with DS is a very easy class"
+    "title": "Ryan Miao",
+    "body": "Ryan Miao, born sometime from 2008 to 2009, is a dastardly freshman at the [Harker Upper school](https://www.harker.org/upper-school). Miao is known for being an absolute tennis pro, being on varsity tennis, unlike Andrew Shin as well as being a participation in the [USACO](https://usaco.org/) Gold division. However, Miao also has a darker, more racist, and vulgar side that only his closest acquaintances are familiar of.\n\n## Quotes\n> \"I like Miners\" - Ryan Miao\n\n\n> \"[Cameron Rampell](https://wiki-client.vercel.app/Cameron_Rampell), are you countered by Emz in Brawl Stars?\" - Ryan Miao\n\n## Accomplishments\n- USACO Gold\n- An A+ in Mr. Rim's Honors World History 1 class\n- Varsity Tennis\n- Not qualifying for AIME\n"
 }

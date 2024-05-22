@@ -26,6 +26,7 @@ app.get("/", async (_, res) => {
 });
 app.get("/allPages", async (_, res) => {
     const allPages = await models_1.Page.findAll({
+        order: [["title", "ASC"]],
         attributes: ["title"]
     });
     res.send(allPages);
@@ -85,7 +86,6 @@ app.post("/new", async (req, res) => {
         res.status(400).send("Bad Parameters");
         return;
     }
-    console.log("POST /new");
     const title = req.body.title.replace(/ /g, "_");
     const body = req.body.body;
     const keyFacts = JSON.stringify(req.body.keyFacts);

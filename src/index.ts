@@ -29,6 +29,7 @@ app.get("/", async (_, res: Response) => {
 
 app.get("/allPages", async (_, res: Response) => {
     const allPages: Page[] = await Page.findAll({
+        order: [["title", "ASC"]],
         attributes: ["title"]
     });
     res.send(allPages);
@@ -96,7 +97,6 @@ app.post("/new", async (req: Request, res: Response) => {
         res.status(400).send("Bad Parameters");
         return;
     }
-    console.log("POST /new")
     const title: string = req.body.title.replace(/ /g, "_");
     const body: string = req.body.body;
     const keyFacts: string = JSON.stringify(req.body.keyFacts);
