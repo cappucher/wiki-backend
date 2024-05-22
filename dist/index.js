@@ -10,6 +10,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const auth_1 = require("./auth");
+const profanity_1 = require("@2toad/profanity");
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
@@ -87,6 +88,10 @@ app.post("/new", async (req, res) => {
         return;
     }
     const title = req.body.title.replace(/ /g, "_");
+    if (profanity_1.profanity.exists(title)) {
+        res.status(400).send({ message: "Profanity in title. Please edit." });
+        return;
+    }
     const body = req.body.body;
     const keyFacts = JSON.stringify(req.body.keyFacts);
     const page = await models_1.Page.findOne({

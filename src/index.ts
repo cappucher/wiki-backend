@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
 import { verifyAdminToken } from "./auth";
+import { profanity } from '@2toad/profanity';
 
 
 const app = express();
@@ -97,7 +98,12 @@ app.post("/new", async (req: Request, res: Response) => {
         res.status(400).send("Bad Parameters");
         return;
     }
+
     const title: string = req.body.title.replace(/ /g, "_");
+    if (profanity.exists(title)) {
+        res.status(400).send({ message: "Profanity in title. Please edit." })
+        return;
+    }
     const body: string = req.body.body;
     const keyFacts: string = JSON.stringify(req.body.keyFacts);
 
