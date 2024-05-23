@@ -30,6 +30,7 @@ app.get("/allPages", async (_, res) => {
         order: [["title", "ASC"]],
         attributes: ["title"]
     });
+    res.setHeader('Cache-Control', 'no-store');
     res.send(allPages);
 });
 app.get("/wiki/:title", async (req, res) => {
@@ -111,6 +112,19 @@ app.post("/new", async (req, res) => {
         return;
     }
     res.status(409).send({ message: "Page already exists." });
+});
+app.delete("/delete", async (req, res) => {
+    try {
+        models_1.Page.destroy({
+            where: {
+                id: parseInt(req.body.id)
+            }
+        });
+        res.status(200).send({ message: "Page deleted" });
+    }
+    catch (_a) {
+        res.status(500).send({ message: "Unable to be deleted." });
+    }
 });
 app.post("/search", async (req, res) => {
     let title = req.body.title;

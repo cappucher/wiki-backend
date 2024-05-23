@@ -33,6 +33,7 @@ app.get("/allPages", async (_, res: Response) => {
         order: [["title", "ASC"]],
         attributes: ["title"]
     });
+    res.setHeader('Cache-Control', 'no-store');
     res.send(allPages);
 })
 
@@ -124,6 +125,19 @@ app.post("/new", async (req: Request, res: Response) => {
         return;
     }
     res.status(409).send({ message: "Page already exists." });
+})
+
+app.delete("/delete", async (req: Request, res: Response) => {
+    try {
+        Page.destroy({
+            where: {
+                id: parseInt(req.body.id)
+            }
+        })
+        res.status(200).send({ message: "Page deleted" });
+    } catch {
+        res.status(500).send({ message: "Unable to be deleted." })
+    }
 })
 
 app.post("/search", async (req: Request, res: Response) => {
